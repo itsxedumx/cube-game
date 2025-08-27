@@ -1,0 +1,519 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 标题栏 */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1000;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #8e9eab, #eef2f3);
+    color: #2c3e50;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+.btn-large {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+/* 主容器 */
+.main-container {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    align-items: stretch;
+}
+
+/* 魔方容器 */
+.cube-container {
+    flex: 2;
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+#cubeCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    min-height: 500px;
+}
+
+.cube-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.completed-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.completed-message h2 {
+    color: #27ae60;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.completed-message p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 控制面板 */
+.control-panel {
+    flex: 1;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+    max-height: calc(100vh - 120px);
+}
+
+.control-panel h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ecf0f1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 状态部分 */
+.status-section {
+    margin-bottom: 25px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+.value {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+#timer {
+    font-family: 'Courier New', monospace;
+    color: #e74c3c;
+}
+
+/* 控制按钮部分 */
+.controls-section {
+    margin-bottom: 25px;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-group .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* 操作记录 */
+.history-section {
+    margin-bottom: 25px;
+}
+
+.move-history {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+}
+
+.no-moves {
+    color: #adb5bd;
+    font-style: italic;
+    text-align: center;
+}
+
+.move-sequence {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #495057;
+    word-wrap: break-word;
+}
+
+/* 统计信息 */
+.stats-section {
+    margin-bottom: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.stat-item {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e9ecef;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    font-family: 'Courier New', monospace;
+}
+
+/* 快捷键面板 */
+.shortcuts-info {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.shortcuts-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #3498db;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+    transition: all 0.3s ease;
+}
+
+.shortcuts-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+}
+
+.shortcuts-panel {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 300px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.shortcuts-panel h4 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #495057;
+}
+
+kbd {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: monospace;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .control-panel {
+        max-width: none;
+        max-height: none;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 10px 20px;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .main-container {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .control-panel {
+        padding: 15px;
+    }
+    
+    .shortcuts-panel {
+        min-width: 250px;
+        right: -20px;
+    }
+}
+
+/* 动画效果 */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* 解法显示样式 */
+.solution-info {
+    background: #e8f4fd;
+    border: 1px solid #b3d9f7;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.solution-info h4 {
+    color: #2980b9;
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.solution-sequence {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 8px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #2c3e50;
+    word-break: break-all;
+}
+
+.solution-hint {
+    color: #7f8c8d;
+    font-size: 12px;
+    margin: 8px 0 0 0;
+    font-style: italic;
+}
+
+.solution-progress {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 8px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.completed-moves {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.remaining-moves {
+    color: #7f8c8d;
+    margin-left: 5px;
+}
+
+.completed-moves:after {
+    content: ' |';
+    color: #bdc3c7;
+    margin: 0 5px;
+}
+
+/* 魔方颜色定义 */
+.cube-face-white { background-color: #ffffff; }
+.cube-face-yellow { background-color: #ffff00; }
+.cube-face-red { background-color: #ff0000; }
+.cube-face-orange { background-color: #ff8c00; }
+.cube-face-blue { background-color: #0000ff; }
+.cube-face-green { background-color: #00ff00; }

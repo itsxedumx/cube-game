@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三阶魔方游戏</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 标题栏 -->
+        <header class="header">
+            <h1 class="title">🔶 三阶魔方</h1>
+            <div class="header-controls">
+                <button id="resetBtn" class="btn btn-secondary">重置</button>
+                <button id="scrambleBtn" class="btn btn-primary">打乱</button>
+            </div>
+        </header>
+
+        <!-- 主游戏区域 -->
+        <main class="main-container">
+            <!-- 魔方3D显示区域 -->
+            <div class="cube-container">
+                <canvas id="cubeCanvas"></canvas>
+                <div class="cube-overlay">
+                    <div id="completedMessage" class="completed-message hidden">
+                        <div class="message-content">
+                            <h2>🎉 恭喜完成！</h2>
+                            <p id="completedStats">用时: <span id="finalTime">--</span> | 步数: <span id="finalMoves">--</span></p>
+                            <button id="newGameBtn" class="btn btn-primary">再来一局</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 侧边控制面板 -->
+            <aside class="control-panel">
+                <!-- 状态信息 -->
+                <div class="status-section">
+                    <h3>游戏状态</h3>
+                    <div class="status-item">
+                        <span class="label">时间:</span>
+                        <span id="timer" class="value">00:00.00</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">步数:</span>
+                        <span id="moveCount" class="value">0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">状态:</span>
+                        <span id="gameStatus" class="value">已完成</span>
+                    </div>
+                </div>
+
+                <!-- 控制按钮 -->
+                <div class="controls-section">
+                    <h3>操作控制</h3>
+                    <div class="button-group">
+                        <button id="startBtn" class="btn btn-success btn-large">开始游戏</button>
+                        <button id="pauseBtn" class="btn btn-warning btn-large">暂停</button>
+                        <button id="undoBtn" class="btn btn-secondary">撤销</button>
+                        <button id="solutionBtn" class="btn btn-info">显示解法</button>
+                    </div>
+                </div>
+
+                <!-- 操作记录 -->
+                <div class="history-section">
+                    <h3>操作序列</h3>
+                    <div id="moveHistory" class="move-history">
+                        <p class="no-moves">暂无操作</p>
+                    </div>
+                </div>
+
+                <!-- 统计信息 -->
+                <div class="stats-section">
+                    <h3>本局统计</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">最好成绩</span>
+                            <span id="bestTime" class="stat-value">--:--</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">平均时间</span>
+                            <span id="avgTime" class="stat-value">--:--</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">完成次数</span>
+                            <span id="solvedCount" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">TPS</span>
+                            <span id="tps" class="stat-value">0.0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- 快捷键提示 -->
+        <div class="shortcuts-info">
+            <button id="shortcutsToggle" class="shortcuts-toggle">?</button>
+            <div id="shortcutsPanel" class="shortcuts-panel hidden">
+                <h4>快捷键说明</h4>
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item"><kbd>R</kbd> 右面顺时针</div>
+                    <div class="shortcut-item"><kbd>L</kbd> 左面顺时针</div>
+                    <div class="shortcut-item"><kbd>U</kbd> 上面顺时针</div>
+                    <div class="shortcut-item"><kbd>D</kbd> 下面顺时针</div>
+                    <div class="shortcut-item"><kbd>F</kbd> 前面顺时针</div>
+                    <div class="shortcut-item"><kbd>B</kbd> 后面顺时针</div>
+                    <div class="shortcut-item"><kbd>R'</kbd> 右面逆时针</div>
+                    <div class="shortcut-item"><kbd>空格</kbd> 开始/暂停</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cube-geometry.js"></script>
+    <script src="js/cube-state.js"></script>
+    <script src="js/cube-renderer.js"></script>
+    <script src="js/cube-controller.js"></script>
+    <script src="js/cube-solver.js"></script>
+    <script src="js/game-timer.js"></script>
+    <script src="js/scramble-generator.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
